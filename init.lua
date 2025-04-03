@@ -163,7 +163,6 @@ vim.opt.scrolloff = 10
 --  See `:help hlsearch`
 --
 --
-vim.keymap.set('n', '<leader>e', vim.cmd.Ex)
 
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
@@ -267,6 +266,41 @@ require('lazy').setup({
         changedelete = { text = '~' },
       },
     },
+  },
+
+  {
+    'nvim-tree/nvim-web-devicons',
+    version = '*',
+    lazy = false,
+    priority = 1000,
+    config = function()
+      require('nvim-tree/nvim-web-devicons').setup() {}
+    end,
+  },
+
+  {
+    'nvim-tree/nvim-tree.lua',
+    version = '*',
+    lazy = false,
+    dependencies = {
+      'nvim-tree/nvim-web-devicons',
+    },
+    config = function()
+      require('nvim-tree').setup {
+        renderer = {
+          icons = {
+            show = {
+              file = true,
+              folder = true,
+              folder_arrow = true,
+              git = true,
+            },
+          },
+        },
+      }
+
+      vim.keymap.set('n', '<leader>e', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
+    end,
   },
 
   {
@@ -508,7 +542,7 @@ require('lazy').setup({
       -- Automatically install LSPs and related tools to stdpath for Neovim
       -- Mason must be loaded before its dependents so we need to set it up here.
       -- NOTE: `opts = {}` is the same as calling `require('mason').setup({})`
-      { 'williamboman/mason.nvim', opts = {} },
+      { 'williamboman/mason.nvim', opts = { ensure_installed = { 'prettier' } } },
       'williamboman/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
 
@@ -708,9 +742,11 @@ require('lazy').setup({
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- but for many setups, the lsp (`ts_ls`) will work just fine
-        -- ts_ls = {},
-        --
-
+        ts_ls = {},
+        angularls = {},
+        html = {},
+        tailwindcss = {},
+        cssls = {},
         jdtls = {
           cmd = { 'jdtls', '-configuration', '/home/user/.cache/jdtls/config', '-data', '/home/user/.cache/jdtls/workspace' },
           filetypes = { 'java' },
@@ -779,7 +815,7 @@ require('lazy').setup({
           require('conform').format { async = true, lsp_format = 'fallback' }
         end,
         mode = '',
-        desc = '[F]ormat buffer',
+        desc = '[f]ormat buffer',
       },
     },
     opts = {
@@ -807,6 +843,11 @@ require('lazy').setup({
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
         -- javascript = { "prettierd", "prettier", stop_after_first = true },
+        html = { 'prettier' }, -- Add Prettier for HTML
+        typescript = { 'prettier' }, -- Add Prettier for TypeScript
+        javascript = { 'prettier' }, -- Ensure JavaScript is covered
+        json = { 'prettier' }, -- Optional, for JSON formatting
+        css = { 'prettier' }, -- Optional, for CSS formatting
       },
     },
   },
@@ -946,8 +987,28 @@ require('lazy').setup({
       -- Load the colorscheme here.
       -- Like many other themes, this one has different styles, and you could load
       -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'tokyonight-night'
+      -- vim.cmd.colorscheme 'tokyonight-night'
     end,
+  },
+  {
+    'xero/miasma.nvim',
+    lazy = false,
+    priority = 1000,
+    config = function()
+      -- vim.cmd 'colorscheme miasma'
+    end,
+  },
+  {
+    'rose-pine/neovim',
+    name = 'rose-pine',
+    config = function()
+      --  vim.cmd 'colorscheme rose-pine'
+    end,
+  },
+
+  {
+    'catppuccin/nvim',
+    name = 'catppuccin',
   },
 
   -- Highlight todo, notes, etc in comments
@@ -990,13 +1051,47 @@ require('lazy').setup({
       --  Check out: https://github.com/echasnovski/mini.nvim
     end,
   },
+
+  {
+    'windwp/nvim-ts-autotag',
+    event = 'VeryLazy',
+    config = function()
+      require('nvim-ts-autotag').setup()
+    end,
+  },
+
+  {
+    'windwp/nvim-autopairs',
+    event = 'InsertEnter',
+    config = function()
+      require('nvim-autopairs').setup {
+        check_ts = true, -- Enable Treesitter integration
+      }
+    end,
+  },
+
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     main = 'nvim-treesitter.configs', -- Sets main module to use for opts
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
+      ensure_installed = {
+        'bash',
+        'c',
+        'diff',
+        'html',
+        'lua',
+        'luadoc',
+        'markdown',
+        'markdown_inline',
+        'query',
+        'vim',
+        'vimdoc',
+        'typescript',
+        'javascript',
+        'css',
+      },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
