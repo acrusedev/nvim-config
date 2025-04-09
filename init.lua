@@ -281,6 +281,17 @@ require('lazy').setup({
   {
     'nvim-lualine/lualine.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
+    config = function()
+      require('lualine').setup {
+        options = {
+          theme = 'auto',
+        },
+        sections = {
+          lualine_c = { 'filename' },
+          lualine_x = { 'encoding', 'fileformat', 'filetype' },
+        },
+      }
+    end,
   },
 
   {
@@ -301,6 +312,36 @@ require('lazy').setup({
               git = true,
             },
           },
+        },
+        update_focused_file = {
+          enable = true,
+          update_root = false,
+        },
+        view = {
+          float = {
+            enable = true,
+            open_win_config = function()
+              local screen_w = vim.o.columns
+              local screen_h = vim.o.lines
+
+              local win_w = math.floor(screen_w * 0.8)
+              local win_h = math.floor(screen_h * 0.8)
+
+              local col = math.floor((screen_w - win_w) / 2)
+              local row = math.floor((screen_h - win_h) / 2)
+
+              return {
+                relative = 'editor',
+                border = 'rounded',
+                style = 'minimal',
+                width = win_w,
+                height = win_h,
+                row = row,
+                col = col,
+              }
+            end,
+          },
+          width = 60, -- fallback if floating is disabled
         },
       }
 
