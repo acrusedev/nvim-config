@@ -279,6 +279,11 @@ require('lazy').setup({
   },
 
   {
+    'nvim-lualine/lualine.nvim',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+  },
+
+  {
     'nvim-tree/nvim-tree.lua',
     version = '*',
     lazy = false,
@@ -317,17 +322,14 @@ require('lazy').setup({
       vim.keymap.set('n', '<C-e>', function()
         harpoon.ui:toggle_quick_menu(harpoon:list())
       end)
-      vim.keymap.set('n', '<C-1>', function()
+      vim.keymap.set('n', '<C-t>', function()
         harpoon:list():select(1)
       end)
-      vim.keymap.set('n', '<C-2>', function()
+      vim.keymap.set('n', '<C-h>', function()
         harpoon:list():select(2)
       end)
-      vim.keymap.set('n', '<C-3>', function()
+      vim.keymap.set('n', '<C-n>', function()
         harpoon:list():select(3)
-      end)
-      vim.keymap.set('n', '<C-4>', function()
-        harpoon.list():select(4)
       end)
     end,
   },
@@ -415,6 +417,18 @@ require('lazy').setup({
     config = function()
       vim.keymap.set('n', '<leader>gs', vim.cmd.Git)
     end,
+  },
+
+  {
+    'notjedi/nvim-rooter.lua',
+    opts = {
+      manual = false,
+      rooter_patterns = {
+        '.git',
+        'Makefile',
+        'package.json',
+      },
+    },
   },
 
   { -- Fuzzy Finder (files, lsp, etc)
