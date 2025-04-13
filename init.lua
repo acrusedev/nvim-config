@@ -192,6 +192,10 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
+-- Help keybinds for aligning the line into the middle of the screen
+vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'Move cursor half a screen up and center it' })
+vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Move cursor half a screen down and center it' })
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -802,11 +806,7 @@ require('lazy').setup({
         html = {},
         tailwindcss = {},
         cssls = {},
-        jdtls = {
-          cmd = { 'jdtls', '-configuration', '/home/user/.cache/jdtls/config', '-data', '/home/user/.cache/jdtls/workspace' },
-          filetypes = { 'java' },
-        },
-
+        java_language_server = {},
         lua_ls = {
           -- cmd = { ... },
           -- filetypes = { ... },
@@ -1045,6 +1045,25 @@ require('lazy').setup({
       -- vim.cmd.colorscheme 'tokyonight-night'
     end,
   },
+
+  {
+    'olivercederborg/poimandres.nvim',
+    lazy = false,
+    priority = 1000,
+    config = function()
+      require('poimandres').setup {
+        -- leave this setup function empty for default config
+        -- or refer to the configuration section
+        -- for configuration options
+      }
+    end,
+
+    -- optionally set the colorscheme within lazy config
+    init = function()
+      vim.cmd 'colorscheme poimandres'
+    end,
+  },
+
   {
     'xero/miasma.nvim',
     lazy = false,
@@ -1203,8 +1222,6 @@ require('lazy').setup({
       ft = '📂',
       init = '⚙',
       keys = '🗝',
-      plugin = '🔌',
-      runtime = '💻',
       require = '🌙',
       source = '📄',
       start = '🚀',
