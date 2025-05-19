@@ -1586,15 +1586,40 @@ require('lazy').setup({
       --vim.cmd 'colorscheme poimandres'
     end,
   },
+
   {
     'jesseleite/nvim-noirbuddy',
+    dependencies = { 'tjdevries/colorbuddy.nvim' },
     lazy = false,
     priority = 1000,
-    opts = {
-      preset = 'miami-nights',
-    },
     config = function()
-      vim.cmd 'colorscheme noirbuddy'
+      require('noirbuddy').setup {
+        preset = 'minimal', -- Używamy presetu miami-nights
+        colors = {
+          primary = '#CF005A', -- Główny kolor akcentujący (jasnoczerwony)
+          secondary = '#07c4ce', -- Drugi kolor akcentujący (jasnozielony)
+          background = '#1F1F1F', -- Tło edytora
+          noir_0 = '#FFFFFF', -- Najjaśniejszy odcień (biały) nazwy funckji
+          noir_1 = '#FFFFFF', -- Lekko ciemniejszy biały (np slowa kluczowe kontrucktor)
+          noir_2 = '#6D6D6D', -- Szary (normalna czcionka)
+          noir_5 = '#FFFFFF', -- slowa kluczowe function
+          noir_6 = '#6D6D6D', -- znaki matematyczne
+          noir_7 = '#aa85a5', -- komentarze
+          diagnostic_error = '#FF3333', -- Kolor błędów
+          diagnostic_warning = '#FFAA33', -- Kolor ostrzeżeń
+          diagnostic_info = '#33AAFF', -- Kolor informacji
+          diagnostic_hint = '#AA33FF', -- Kolor podpowiedzi
+          diff_add = '#55FF55', -- Kolor dla dodanych linii
+          diff_change = '#FFFF55', -- Kolor dla zmienionych linii
+          diff_delete = '#FF5555', -- Kolor dla usuniętych linii
+        },
+        styles = {
+          italic = true, -- Włączenie kursywy (np. dla komentarzy)
+          bold = true, -- Włączenie pogrubienia (np. dla słów kluczowych)
+          underline = false, -- Wyłączenie podkreślenia
+          undercurl = false, -- Włączenie falistego podkreślenia (np. dla błędów)
+        },
+      }
     end,
   },
 
