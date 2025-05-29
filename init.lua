@@ -1,4 +1,4 @@
---[[
+--[[init
 
 =====================================================================
 ==================== READ THIS BEFORE CONTINUING ====================
@@ -1071,11 +1071,17 @@ require('lazy').setup({
         -- You can put your default mappings / updates / etc. in here
         --  All the info you're looking for is in `:help telescope.setup()`
         --
-        -- defaults = {
-        --   mappings = {
-        --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
-        --   },
-        -- },
+        defaults = {
+          file_ignore_patterns = {
+            '__pycache__/',
+            '%.pyc$',
+            '%.git/',
+            'node_modules/',
+          },
+          -- mappings = {
+          --   i = { ['<c-enter>'] = 'to_fuzzy_refine' },
+          -- },
+        },
         -- pickers = {}
         extensions = {
           ['ui-select'] = {
@@ -1338,7 +1344,6 @@ require('lazy').setup({
       local servers = {
         -- clangd = {},
         -- gopls = {},
-        -- pyright = {},
         -- rust_analyzer = {},
         -- ... etc. see `:help lspconfig-all` for a list of all the pre-configured lsps
         --
@@ -1349,7 +1354,20 @@ require('lazy').setup({
         ts_ls = {},
         angularls = {},
         html = {},
+        pyright = {
+          settings = {
+            python = {
+              python_path = './.venv/Scripts/python.exe',
+              analysis = {
+                autoSearchPaths = true,
+                diagnosticMode = 'workspace',
+                useLibraryCodeForTypes = true,
+              },
+            },
+          },
+        },
         tailwindcss = {},
+        jsonls = {},
         cssls = {},
         java_language_server = {},
         lua_ls = {
@@ -1596,19 +1614,19 @@ require('lazy').setup({
       require('noirbuddy').setup {
         preset = 'minimal', -- Używamy presetu miami-nights
         colors = {
-          primary = '#CF005A', -- Główny kolor akcentujący (jasnoczerwony)
-          secondary = '#07c4ce', -- Drugi kolor akcentujący (jasnozielony)
-          background = '#1F1F1F', -- Tło edytora
+          primary = '#a8ffbf', -- Główny kolor akcentujący (jasnoczerwony)
+          -- secondary = '#067cff', -- Drugi kolor akcentujący (jasnozielony)
+          background = '#000000', -- Tło edytora
           noir_0 = '#FFFFFF', -- Najjaśniejszy odcień (biały) nazwy funckji
-          noir_1 = '#FFFFFF', -- Lekko ciemniejszy biały (np slowa kluczowe kontrucktor)
-          noir_2 = '#6D6D6D', -- Szary (normalna czcionka)
-          noir_5 = '#FFFFFF', -- slowa kluczowe function
-          noir_6 = '#6D6D6D', -- znaki matematyczne
-          noir_7 = '#aa85a5', -- komentarze
+          -- noir_1 = '#FFFFFF', -- Lekko ciemniejszy biały (np slowa kluczowe kontrucktor)
+          -- noir_2 = '#cccccc',
+          -- noir_5 = '#FFFFFF', -- slowa kluczowe function
+          -- noir_6 = '#6D6D6D', -- znaki matematyczne
+          noir_7 = '#ffceab', -- komentarze
           diagnostic_error = '#FF3333', -- Kolor błędów
           diagnostic_warning = '#FFAA33', -- Kolor ostrzeżeń
           diagnostic_info = '#33AAFF', -- Kolor informacji
-          diagnostic_hint = '#AA33FF', -- Kolor podpowiedzi
+          diagnostic_hint = '#33ffaa', -- Kolor podpowiedzi
           diff_add = '#55FF55', -- Kolor dla dodanych linii
           diff_change = '#FFFF55', -- Kolor dla zmienionych linii
           diff_delete = '#FF5555', -- Kolor dla usuniętych linii
