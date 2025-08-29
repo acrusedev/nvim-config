@@ -118,6 +118,8 @@ vim.schedule(function()
   vim.opt.clipboard = 'unnamedplus'
 end)
 
+vim.opt.background = 'dark'
+
 -- Enable break indent
 vim.opt.breakindent = true
 
@@ -1014,7 +1016,7 @@ require('lazy').setup({
     opts = {
       manual = false,
       rooter_patterns = {
-        '.git',
+        --        '.git',
         'Makefile',
         'package.json',
       },
@@ -1343,7 +1345,7 @@ require('lazy').setup({
       --        for example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
         -- clangd = {},
-        -- gopls = {},
+        gopls = {},
         -- rust_analyzer = {},
         -- ... etc. see `:help lspconfig-all` for a list of all the pre-configured lsps
         --
@@ -1369,6 +1371,7 @@ require('lazy').setup({
         tailwindcss = {},
         jsonls = {},
         cssls = {},
+        rust_analyzer = {},
         java_language_server = {},
         lua_ls = {
           -- cmd = { ... },
@@ -1588,6 +1591,15 @@ require('lazy').setup({
   },
 
   {
+    'nyoom-engineering/oxocarbon.nvim',
+    lazy = false,
+    priority = 1000,
+    config = function()
+      vim.cmd 'colorscheme oxocarbon'
+    end,
+  },
+
+  {
     'olivercederborg/poimandres.nvim',
     lazy = false,
     priority = 1000,
@@ -1603,46 +1615,6 @@ require('lazy').setup({
     init = function()
       --vim.cmd 'colorscheme poimandres'
     end,
-  },
-
-  {
-    'jesseleite/nvim-noirbuddy',
-    dependencies = { 'tjdevries/colorbuddy.nvim' },
-    lazy = false,
-    priority = 1000,
-    config = function()
-      require('noirbuddy').setup {
-        preset = 'minimal', -- Używamy presetu miami-nights
-        colors = {
-          primary = '#a8ffbf', -- Główny kolor akcentujący (jasnoczerwony)
-          -- secondary = '#067cff', -- Drugi kolor akcentujący (jasnozielony)
-          background = '#000000', -- Tło edytora
-          noir_0 = '#FFFFFF', -- Najjaśniejszy odcień (biały) nazwy funckji
-          -- noir_1 = '#FFFFFF', -- Lekko ciemniejszy biały (np slowa kluczowe kontrucktor)
-          -- noir_2 = '#cccccc',
-          -- noir_5 = '#FFFFFF', -- slowa kluczowe function
-          -- noir_6 = '#6D6D6D', -- znaki matematyczne
-          noir_7 = '#ffceab', -- komentarze
-          diagnostic_error = '#FF3333', -- Kolor błędów
-          diagnostic_warning = '#FFAA33', -- Kolor ostrzeżeń
-          diagnostic_info = '#33AAFF', -- Kolor informacji
-          diagnostic_hint = '#33ffaa', -- Kolor podpowiedzi
-          diff_add = '#55FF55', -- Kolor dla dodanych linii
-          diff_change = '#FFFF55', -- Kolor dla zmienionych linii
-          diff_delete = '#FF5555', -- Kolor dla usuniętych linii
-        },
-        styles = {
-          italic = true, -- Włączenie kursywy (np. dla komentarzy)
-          bold = true, -- Włączenie pogrubienia (np. dla słów kluczowych)
-          underline = false, -- Wyłączenie podkreślenia
-          undercurl = false, -- Włączenie falistego podkreślenia (np. dla błędów)
-        },
-      }
-    end,
-  },
-
-  {
-    'tjdevries/colorbuddy.nvim',
   },
 
   {
