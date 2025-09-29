@@ -1345,7 +1345,6 @@ require('lazy').setup({
       --        for example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
         -- clangd = {},
-        gopls = {},
         -- rust_analyzer = {},
         -- ... etc. see `:help lspconfig-all` for a list of all the pre-configured lsps
         --
@@ -1372,7 +1371,6 @@ require('lazy').setup({
         jsonls = {},
         cssls = {},
         rust_analyzer = {},
-        java_language_server = {},
         lua_ls = {
           -- cmd = { ... },
           -- filetypes = { ... },
@@ -1595,7 +1593,8 @@ require('lazy').setup({
     lazy = false,
     priority = 1000,
     config = function()
-      vim.cmd 'colorscheme oxocarbon'
+      -- vim.cmd 'colorscheme oxocarbon'
+      vim.cmd 'colorscheme miniautumn'
     end,
   },
 
@@ -1761,7 +1760,7 @@ require('lazy').setup({
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
-    main = 'nvim-treesitter.configs', -- Sets main module to use for opts
+    -- main = 'nvim-treesitter.configs', -- Sets main module to use for opts, this causes some errors, no idea why :((
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
       ensure_installed = {
