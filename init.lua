@@ -122,7 +122,6 @@ vim.opt.relativenumber = true
 vim.opt.mouse = 'a'
 vim.opt.updatetime = 50
 
-vim.opt.colorcolumn = '80'
 vim.opt.signcolumn = 'yes'
 
 -- Don't show the mode, since it's already in the status line
