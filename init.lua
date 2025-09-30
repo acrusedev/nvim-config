@@ -90,10 +90,24 @@ P.S. You can delete this when you're done too. It's your config now! :)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
--- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
+vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv")
+vim.keymap.set('v', 'K', ":m '>-2<CR>gv=gv")
 
--- [[ Setting options ]]
+-- Set to true if you have a Nerd Font installed and selected in the terminal
+-- Use true colors in terminal
+vim.o.termguicolors = true
+vim.opt.background = 'dark'
+
+-- Load your colorscheme
+
+-- Now override highlights *after* colorscheme is applied
+vim.cmd [[
+  highlight Normal guibg=NONE ctermbg=NONE
+  highlight NormalNC guibg=NONE ctermbg=NONE
+  highlight EndOfBuffer guibg=NONE ctermbg=NONE
+  highlight LineNr guibg=NONE ctermbg=NONE
+  highlight SignColumn guibg=NONE ctermbg=NONE
+]] -- [[ Setting options ]]
 -- See `:help vim.opt`
 -- NOTE: You can change these options as you wish!
 --  For more options, you can see `:help option-list`
@@ -106,6 +120,10 @@ vim.opt.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = 'a'
+vim.opt.updatetime = 50
+
+vim.opt.colorcolumn = '80'
+vim.opt.signcolumn = 'yes'
 
 -- Don't show the mode, since it's already in the status line
 vim.opt.showmode = false
@@ -117,8 +135,6 @@ vim.opt.showmode = false
 vim.schedule(function()
   vim.opt.clipboard = 'unnamedplus'
 end)
-
-vim.opt.background = 'dark'
 
 -- Enable break indent
 vim.opt.breakindent = true
@@ -279,9 +295,6 @@ require('lazy').setup({
     version = '*',
     lazy = false,
     priority = 1000,
-    config = function()
-      require('nvim-tree/nvim-web-devicons').setup() {}
-    end,
   },
 
   {
@@ -939,6 +952,16 @@ require('lazy').setup({
       })
     end,
   },
+  {
+    'rose-pine/neovim',
+    name = 'rose-pine',
+    config = function()
+      vim.cmd 'colorscheme rose-pine'
+
+      vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
+      vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
+    end,
+  },
 
   { -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
@@ -1588,119 +1611,6 @@ require('lazy').setup({
     end,
   },
 
-  {
-    'nyoom-engineering/oxocarbon.nvim',
-    lazy = false,
-    priority = 1000,
-    config = function()
-      -- vim.cmd 'colorscheme oxocarbon'
-      vim.cmd 'colorscheme miniautumn'
-    end,
-  },
-
-  {
-    'olivercederborg/poimandres.nvim',
-    lazy = false,
-    priority = 1000,
-    config = function()
-      require('poimandres').setup {
-        -- leave this setup function empty for default config
-        -- or refer to the configuration section
-        -- for configuration options
-      }
-    end,
-
-    -- optionally set the colorscheme within lazy config
-    init = function()
-      --vim.cmd 'colorscheme poimandres'
-    end,
-  },
-
-  {
-    'folke/tokyonight.nvim',
-    opts = {
-      style = 'night',
-      lualine_bold = true, -- bold headers for each section header
-      day_brightness = 0.15, -- high contrast but colorful
-
-      -- jack up all saturation, default is too dull!
-      on_colors = function(colors)
-        local hsluv = require 'tokyonight.hsluv'
-        local multiplier = 2.0
-
-        for k, v in pairs(colors) do
-          if type(v) == 'string' and v ~= 'NONE' then
-            local hsv = hsluv.hex_to_hsluv(v)
-            hsv[2] = hsv[2] * multiplier > 100 and 100 or hsv[2] * multiplier
-            colors[k] = hsluv.hsluv_to_hex(hsv)
-          elseif type(v) == 'table' then
-            if vim.islist(v) then
-              for kk, vv in ipairs(v) do
-                if type(vv) == 'string' and vv ~= 'NONE' then
-                  local hsv = hsluv.hex_to_hsluv(vv)
-                  hsv[2] = hsv[2] * multiplier > 100 and 100 or hsv[2] * multiplier
-                  colors[k][kk] = hsluv.hsluv_to_hex(hsv)
-                end
-              end
-            else
-              for kk, vv in pairs(v) do
-                if type(vv) == 'string' and vv ~= 'NONE' then
-                  local hsv = hsluv.hex_to_hsluv(vv)
-                  hsv[2] = hsv[2] * multiplier > 100 and 100 or hsv[2] * multiplier
-                  colors[k][kk] = hsluv.hsluv_to_hex(hsv)
-                end
-              end
-            end
-          end
-        end
-      end,
-    },
-    name = 'tokyonight',
-    config = function()
-      -- vim.cmd 'colorscheme tokyonight'
-    end,
-  },
-
-  {
-    'diegoulloao/neofusion.nvim',
-    name = 'neofusion',
-    config = function()
-      --  vim.cmd 'colorscheme neofusion'
-    end,
-  },
-
-  {
-    'datsfilipe/vesper.nvim',
-    name = 'vesper',
-    config = function()
-      -- vim.cmd 'colorscheme vesper'
-    end,
-  },
-
-  {
-    'tiesen243/vercel.nvim',
-    name = 'vercel',
-    config = function()
-      -- vim.cmd 'colorscheme vercel'
-    end,
-  },
-
-  {
-    'rose-pine/neovim',
-    name = 'rose-pine',
-    config = function()
-      --  vim.cmd 'colorscheme rose-pine'
-    end,
-  },
-
-  {
-    'catppuccin/nvim',
-    name = 'catppuccin',
-  },
-
-  -- Highlight todo, notes, etc in comments
-  { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
-
   { -- Collection of various small independent plugins/modules
     'echasnovski/mini.nvim',
     config = function()
@@ -1777,6 +1687,7 @@ require('lazy').setup({
         'vimdoc',
         'typescript',
         'javascript',
+        'python',
         'css',
       },
       -- Autoinstall languages that are not installed
