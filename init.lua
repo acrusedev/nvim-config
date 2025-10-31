@@ -91,7 +91,10 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv")
-vim.keymap.set('v', 'K', ":m '>-2<CR>gv=gv")
+vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv")
+
+vim.keymap.set('v', '>', '>gv')
+vim.keymap.set('v', '<', '<gv')
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 -- Use true colors in terminal
@@ -955,10 +958,28 @@ require('lazy').setup({
     'rose-pine/neovim',
     name = 'rose-pine',
     config = function()
-      vim.cmd 'colorscheme rose-pine'
+      -- vim.cmd 'colorscheme rose-pine'
 
       vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
       vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
+    end,
+  },
+
+  {
+    'stevedylandev/darkmatter-nvim',
+    lazy = false,
+    priority = 1000,
+    config = function()
+      vim.cmd 'colorscheme darkmatter'
+    end,
+  },
+
+  {
+    'savq/melange-nvim',
+
+    name = 'melange',
+    config = function()
+      -- vim.cmd 'colorscheme melange'
     end,
   },
 
