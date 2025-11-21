@@ -174,7 +174,7 @@ vim.opt.inccommand = 'split'
 vim.opt.cursorline = true
 
 -- Minimal number of screen lines to keep above and below the cursor.
-vim.opt.scrolloff = 10
+vim.opt.scrolloff = 14
 
 -- [[ Basic Keymaps ]
 --  See `:help vim.keymap.set()`
@@ -198,10 +198,10 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
 -- TIP: Disable arrow keys in normal mode
--- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
--- vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
--- vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
--- vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
+vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
+vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
+vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
+vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 
 -- Keybinds to make split navigation easier.
 --  Use CTRL+<hjkl> to switch between windows
@@ -777,13 +777,6 @@ require('lazy').setup({
         desc = 'References',
       },
       {
-        'gI',
-        function()
-          Snacks.picker.lsp_implementations()
-        end,
-        desc = 'Goto Implementation',
-      },
-      {
         'gy',
         function()
           Snacks.picker.lsp_type_definitions()
@@ -958,10 +951,18 @@ require('lazy').setup({
     'rose-pine/neovim',
     name = 'rose-pine',
     config = function()
-      -- vim.cmd 'colorscheme rose-pine'
+      require('rose-pine').setup {
+        styles = {
+          bold = true,
+          italic = false,
+          transparency = true,
+        },
+      }
 
       vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
       vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
+
+      vim.cmd 'colorscheme rose-pine'
     end,
   },
 
@@ -970,7 +971,7 @@ require('lazy').setup({
     lazy = false,
     priority = 1000,
     config = function()
-      vim.cmd 'colorscheme darkmatter'
+      -- vim.cmd 'colorscheme darkmatter'
     end,
   },
 
@@ -1398,14 +1399,49 @@ require('lazy').setup({
         ts_ls = {},
         angularls = {},
         html = {},
+        ruff = {
+          settings = {
+            python = {
+              pythonPath = './.venv/Scripts/python.exe',
+
+              analysis = {
+                autoSearchPaths = true,
+                diagnosticMode = 'workspace',
+                useLibraryCodeForTypes = true,
+
+                typeCheckingMode = 'basic', -- like pyright
+                stubPath = 'typings',
+              },
+            },
+
+            -- Ruff-linter config (most commonly used)
+            lint = {
+              enable = true,
+              select = { 'E', 'F', 'W', 'I', 'N', 'UP', 'B', 'ASYNC', 'COM' },
+              ignore = { 'E501' }, -- ignore line length (Black handles this)
+              format = true,
+              organizeImports = true,
+              preview = false,
+            },
+
+            -- Ruff-imports (like isort)
+            organizeImports = true,
+
+            -- Ruff formatter (turn ON if using Ruff fmt instead of Black)
+            format = {
+              enable = true,
+            },
+          },
+        },
         pyright = {
           settings = {
             python = {
               python_path = './.venv/Scripts/python.exe',
               analysis = {
                 autoSearchPaths = true,
-                diagnosticMode = 'workspace',
                 useLibraryCodeForTypes = true,
+                typeCheckingMode = 'off',
+                diagnosticMode = 'off',
               },
             },
           },
@@ -1501,7 +1537,7 @@ require('lazy').setup({
       formatters_by_ft = {
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
-        -- python = { "isort", "black" },
+        python = { 'ruff' },
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
         -- javascript = { "prettierd", "prettier", stop_after_first = true },
@@ -1537,6 +1573,7 @@ require('lazy').setup({
           -- {
           --   'rafamadriz/friendly-snippets',
           --   config = function()
+          --
           --     require('luasnip.loaders.from_vscode').lazy_load()
           --   end,
           -- },
