@@ -1,4 +1,4 @@
---[[init
+--[[
 
 =====================================================================
 ==================== READ THIS BEFORE CONTINUING ====================
@@ -984,7 +984,7 @@ require('lazy').setup({
     end,
   },
 
-  { -- Useful plugin to show you pending keybinds.
+  {                     -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'
     opts = {
@@ -1030,7 +1030,7 @@ require('lazy').setup({
 
       -- Document existing key chains
       spec = {
-        { '<leader>c', group = '[C]ode', mode = { 'n', 'x' } },
+        { '<leader>c', group = '[C]ode',     mode = { 'n', 'x' } },
         { '<leader>d', group = '[D]ocument' },
         { '<leader>r', group = '[R]ename' },
         { '<leader>s', group = '[S]earch' },
@@ -1089,7 +1089,7 @@ require('lazy').setup({
       { 'nvim-telescope/telescope-ui-select.nvim' },
 
       -- Useful for getting pretty icons, but requires a Nerd Font.
-      { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
+      { 'nvim-tree/nvim-web-devicons',            enabled = vim.g.have_nerd_font },
     },
     config = function()
       -- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -1203,7 +1203,7 @@ require('lazy').setup({
       'WhoIsSethDaniel/mason-tool-installer.nvim',
 
       -- Useful status updates for LSP.
-      { 'j-hui/fidget.nvim', opts = {} },
+      { 'j-hui/fidget.nvim',       opts = {} },
 
       -- Allows extra capabilities provided by nvim-cmp
       'hrsh7th/cmp-nvim-lsp',
@@ -1541,11 +1541,11 @@ require('lazy').setup({
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
         -- javascript = { "prettierd", "prettier", stop_after_first = true },
-        html = { 'prettier' }, -- Add Prettier for HTML
+        html = { 'prettier' },       -- Add Prettier for HTML
         typescript = { 'prettier' }, -- Add Prettier for TypeScript
         javascript = { 'prettier' }, -- Ensure JavaScript is covered
-        json = { 'prettier' }, -- Optional, for JSON formatting
-        css = { 'prettier' }, -- Optional, for CSS formatting
+        json = { 'prettier' },       -- Optional, for JSON formatting
+        css = { 'prettier' },        -- Optional, for CSS formatting
       },
     },
   },
@@ -1726,6 +1726,8 @@ require('lazy').setup({
 
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
+    version = "v0.1.9",
+    dependencies = { 'nvim-lua/plenary.nvim' },
     build = ':TSUpdate',
     -- main = 'nvim-treesitter.configs', -- Sets main module to use for opts, this causes some errors, no idea why :((
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
