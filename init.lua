@@ -970,9 +970,38 @@ require('lazy').setup({
     'stevedylandev/darkmatter-nvim',
     lazy = false,
     priority = 1000,
+    name = 'darkmatter',
     config = function()
-      -- vim.cmd 'colorscheme darkmatter'
     end,
+  },
+
+  {
+    'Mofiqul/vscode.nvim',
+    priority = 1000,
+    name = "vscode",
+    config = function()
+      require('vscode').setup {
+        transparent = true
+      }
+      vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
+      vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
+      -- vim.cmd 'colorscheme vscode'
+    end
+  },
+
+  {
+    'olivercederborg/poimandres.nvim',
+    priority = 1000,
+    name = 'poimandres',
+    config = function()
+      require('poimandres').setup {
+        disable_background = true
+      }
+
+      vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
+      vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
+      -- vim.cmd 'colorscheme poimandres'
+    end
   },
 
   {
@@ -980,6 +1009,9 @@ require('lazy').setup({
 
     name = 'melange',
     config = function()
+      vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
+      vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
+
       -- vim.cmd 'colorscheme melange'
     end,
   },
@@ -1587,11 +1619,15 @@ require('lazy').setup({
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-path',
       'hrsh7th/cmp-nvim-lsp-signature-help',
+      'hrsh7th/cmp-buffer', -- Uzupełnianie ze słów w bieżącym buforze
+      'onsails/lspkind.nvim', -- Ikony w menu podpowiedzi
     },
     config = function()
       -- See `:help cmp`
       local cmp = require 'cmp'
       local luasnip = require 'luasnip'
+      local lspkind = require 'lspkind'
+      local compare = require 'cmp.config.compare'
       luasnip.config.setup {}
 
       cmp.setup {
@@ -1600,7 +1636,48 @@ require('lazy').setup({
             luasnip.lsp_expand(args.body)
           end,
         },
-        completion = { completeopt = 'menu,menuone,noinsert' },
+        completion = { completeopt = 'menu,menuone,noselect' },
+
+        -- Wygląd okna podpowiedzi
+        window = {
+          completion = cmp.config.window.bordered(),
+          documentation = cmp.config.window.bordered(),
+        },
+
+        -- Ikony i formatowanie (lspkind)
+        formatting = {
+          format = lspkind.cmp_format {
+            mode = 'symbol_text',
+            maxwidth = 50,
+            ellipsis_char = '...',
+            menu = {
+              nvim_lsp = '[LSP]',
+              luasnip = '[Snip]',
+              buffer = '[Buf]',
+              path = '[Path]',
+              lazydev = '[Lazy]',
+            },
+          },
+        },
+
+        -- Lepsze sortowanie wyników
+        sorting = {
+          comparators = {
+            compare.offset,
+            compare.exact,
+            compare.score,
+            compare.recently_used,
+            compare.locality,
+            compare.kind,
+            compare.length,
+            compare.order,
+          },
+        },
+
+        -- Ghost text - podgląd inline
+        experimental = {
+          ghost_text = true,
+        },
 
         -- For an understanding of why these mappings were
         -- chosen, you will need to read `:help ins-completion`
@@ -1620,25 +1697,32 @@ require('lazy').setup({
           --  This will auto-import if your LSP supports it.
           --  This will expand snippets if the LSP sent a snippet.
           ['<C-Enter>'] = cmp.mapping.confirm { select = true },
-          -- If you prefer more traditional completion keymaps,
-          -- you can uncomment the following lines
-          --['<CR>'] = cmp.mapping.confirm { select = true },
-          --['<Tab>'] = cmp.mapping.select_next_item(),
-          --['<S-Tab>'] = cmp.mapping.select_prev_item(),
+          ['<CR>'] = cmp.mapping.confirm { select = false }, -- Potwierdź tylko gdy coś jest wybrane
+
+          -- Tab/S-Tab dla nawigacji i snippetów
+          ['<Tab>'] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              cmp.select_next_item()
+            elseif luasnip.expand_or_jumpable() then
+              luasnip.expand_or_jump()
+            else
+              fallback()
+            end
+          end, { 'i', 's' }),
+          ['<S-Tab>'] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              cmp.select_prev_item()
+            elseif luasnip.jumpable(-1) then
+              luasnip.jump(-1)
+            else
+              fallback()
+            end
+          end, { 'i', 's' }),
 
           -- Manually trigger a completion from nvim-cmp.
-          --  Generally you don't need this, because nvim-cmp will display
-          --  completions whenever it has completion options available.
           ['<C-Space>'] = cmp.mapping.complete {},
 
-          -- Think of <c-l> as moving to the right of your snippet expansion.
-          --  So if you have a snippet that's like:
-          --  function $name($args)
-          --    $body
-          --  end
-          --
-          -- <c-l> will move you to the right of each of the expansion locations.
-          -- <c-h> is similar, except moving you backwards.
+          -- Snippet navigation (C-l forward, C-h backward)
           ['<C-l>'] = cmp.mapping(function()
             if luasnip.expand_or_locally_jumpable() then
               luasnip.expand_or_jump()
@@ -1649,9 +1733,6 @@ require('lazy').setup({
               luasnip.jump(-1)
             end
           end, { 'i', 's' }),
-
-          -- For more advanced Luasnip keymaps (e.g. selecting choice nodes, expansion) see:
-          --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
         },
         sources = {
           {
@@ -1659,10 +1740,11 @@ require('lazy').setup({
             -- set group index to 0 to skip loading LuaLS completions as lazydev recommends it
             group_index = 0,
           },
-          { name = 'nvim_lsp' },
-          { name = 'luasnip' },
-          { name = 'path' },
-          { name = 'nvim_lsp_signature_help' },
+          { name = 'nvim_lsp' }, -- LSP (Python, Rust, TS, JS)
+          { name = 'luasnip' }, -- Snippety
+          { name = 'nvim_lsp_signature_help' }, -- Sygnatury funkcji
+          { name = 'path' }, -- Ścieżki plików
+          { name = 'buffer', keyword_length = 3 }, -- Słowa z bieżącego bufora
         },
       }
     end,
@@ -1722,6 +1804,35 @@ require('lazy').setup({
         check_ts = true, -- Enable Treesitter integration
       }
     end,
+  },
+
+  -- Flash.nvim - błyskawiczne skakanie po tekście
+  {
+    'folke/flash.nvim',
+    event = 'VeryLazy',
+    opts = {},
+    keys = {
+      { 's', mode = { 'n', 'x', 'o' }, function() require('flash').jump() end, desc = 'Flash' },
+      { 'S', mode = { 'n', 'x', 'o' }, function() require('flash').treesitter() end, desc = 'Flash Treesitter' },
+      { 'r', mode = 'o', function() require('flash').remote() end, desc = 'Remote Flash' },
+      { 'R', mode = { 'o', 'x' }, function() require('flash').treesitter_search() end, desc = 'Treesitter Search' },
+    },
+  },
+
+  -- Trouble.nvim - piękna lista diagnostyk i referencji
+  {
+    'folke/trouble.nvim',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    cmd = 'Trouble',
+    opts = {},
+    keys = {
+      { '<leader>xx', '<cmd>Trouble diagnostics toggle<cr>', desc = 'Diagnostics (Trouble)' },
+      { '<leader>xX', '<cmd>Trouble diagnostics toggle filter.buf=0<cr>', desc = 'Buffer Diagnostics (Trouble)' },
+      { '<leader>xs', '<cmd>Trouble symbols toggle focus=false<cr>', desc = 'Symbols (Trouble)' },
+      { '<leader>xl', '<cmd>Trouble lsp toggle focus=false win.position=right<cr>', desc = 'LSP Definitions / References' },
+      { '<leader>xL', '<cmd>Trouble loclist toggle<cr>', desc = 'Location List (Trouble)' },
+      { '<leader>xQ', '<cmd>Trouble qflist toggle<cr>', desc = 'Quickfix List (Trouble)' },
+    },
   },
 
   { -- Highlight, edit, and navigate code
