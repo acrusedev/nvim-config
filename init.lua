@@ -1,5 +1,5 @@
---[[
-
+--[[init
+initinit
 =====================================================================
 ==================== READ THIS BEFORE CONTINUING ====================
 =====================================================================
@@ -426,7 +426,27 @@ require('lazy').setup({
         enabled = true,
         timeout = 3000,
       },
-      picker = { enabled = true },
+      picker = {
+        enabled = true,
+        layout = {
+          preset = "default",
+        },
+        formatters = {
+          file = {
+            filename_first = false,
+            truncate = 80,
+          },
+        },
+        win = {
+          input = {
+            keys = {
+              ["<c-t>"] = { "edit_tab", mode = { "i", "n" } },
+              ["<c-s>"] = { "edit_split", mode = { "i", "n" } },
+              ["<c-v>"] = { "edit_vsplit", mode = { "i", "n" } },
+            },
+          },
+        },
+      },
       quickfile = { enabled = true },
       scope = { enabled = true },
       scroll = { enabled = true },
@@ -771,7 +791,7 @@ require('lazy').setup({
       {
         'gr',
         function()
-          Snacks.picker.lsp_references()
+          require('telescope.builtin').lsp_references()
         end,
         nowait = true,
         desc = 'References',
@@ -962,7 +982,7 @@ require('lazy').setup({
       vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
       vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
 
-      vim.cmd 'colorscheme rose-pine'
+      -- vim.cmd 'colorscheme rose-pine'
     end,
   },
 
@@ -972,6 +992,10 @@ require('lazy').setup({
     priority = 1000,
     name = 'darkmatter',
     config = function()
+      vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
+      vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
+
+      -- vim.cmd 'colorscheme darkmatter-nvim'
     end,
   },
 
@@ -1003,7 +1027,25 @@ require('lazy').setup({
       -- vim.cmd 'colorscheme poimandres'
     end
   },
+  {
+    'nyoom-engineering/oxocarbon.nvim',
+    config = function()
+      vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
+      vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
+      vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
+      vim.cmd 'colorscheme oxocarbon'
+    end
+  },
 
+  {
+    'datsfilipe/vesper.nvim',
+    config = function()
+      vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
+      vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
+      vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
+      -- vim.cmd 'colorscheme vesper'
+    end
+  },
   {
     'savq/melange-nvim',
 
@@ -1160,7 +1202,17 @@ require('lazy').setup({
           --   i = { ['<c-enter>'] = 'to_fuzzy_refine' },
           -- },
         },
-        -- pickers = {}
+        pickers = {
+          lsp_references = {
+            fname_width = 100,
+          },
+          lsp_definitions = {
+            fname_width = 100,
+          },
+          lsp_implementations = {
+            fname_width = 100,
+          },
+        },
         extensions = {
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
@@ -1401,6 +1453,7 @@ require('lazy').setup({
             return diagnostic_message[diagnostic.severity]
           end,
         },
+
       }
 
       -- lsp servers and clients are able to communicate to each other what features they support.
@@ -1619,7 +1672,7 @@ require('lazy').setup({
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-path',
       'hrsh7th/cmp-nvim-lsp-signature-help',
-      'hrsh7th/cmp-buffer', -- Uzupełnianie ze słów w bieżącym buforze
+      'hrsh7th/cmp-buffer',   -- Uzupełnianie ze słów w bieżącym buforze
       'onsails/lspkind.nvim', -- Ikony w menu podpowiedzi
     },
     config = function()
@@ -1740,11 +1793,11 @@ require('lazy').setup({
             -- set group index to 0 to skip loading LuaLS completions as lazydev recommends it
             group_index = 0,
           },
-          { name = 'nvim_lsp' }, -- LSP (Python, Rust, TS, JS)
-          { name = 'luasnip' }, -- Snippety
-          { name = 'nvim_lsp_signature_help' }, -- Sygnatury funkcji
-          { name = 'path' }, -- Ścieżki plików
-          { name = 'buffer', keyword_length = 3 }, -- Słowa z bieżącego bufora
+          { name = 'nvim_lsp' },                                   -- LSP (Python, Rust, TS, JS)
+          { name = 'luasnip' },                                    -- Snippety
+          { name = 'nvim_lsp_signature_help' },                    -- Sygnatury funkcji
+          { name = 'path' },                                       -- Ścieżki plików
+          { name = 'buffer',                 keyword_length = 3 }, -- Słowa z bieżącego bufora
         },
       }
     end,
@@ -1812,10 +1865,10 @@ require('lazy').setup({
     event = 'VeryLazy',
     opts = {},
     keys = {
-      { 's', mode = { 'n', 'x', 'o' }, function() require('flash').jump() end, desc = 'Flash' },
-      { 'S', mode = { 'n', 'x', 'o' }, function() require('flash').treesitter() end, desc = 'Flash Treesitter' },
-      { 'r', mode = 'o', function() require('flash').remote() end, desc = 'Remote Flash' },
-      { 'R', mode = { 'o', 'x' }, function() require('flash').treesitter_search() end, desc = 'Treesitter Search' },
+      { 's', mode = { 'n', 'x', 'o' }, function() require('flash').jump() end,              desc = 'Flash' },
+      { 'S', mode = { 'n', 'x', 'o' }, function() require('flash').treesitter() end,        desc = 'Flash Treesitter' },
+      { 'r', mode = 'o',               function() require('flash').remote() end,            desc = 'Remote Flash' },
+      { 'R', mode = { 'o', 'x' },      function() require('flash').treesitter_search() end, desc = 'Treesitter Search' },
     },
   },
 
@@ -1826,12 +1879,12 @@ require('lazy').setup({
     cmd = 'Trouble',
     opts = {},
     keys = {
-      { '<leader>xx', '<cmd>Trouble diagnostics toggle<cr>', desc = 'Diagnostics (Trouble)' },
-      { '<leader>xX', '<cmd>Trouble diagnostics toggle filter.buf=0<cr>', desc = 'Buffer Diagnostics (Trouble)' },
-      { '<leader>xs', '<cmd>Trouble symbols toggle focus=false<cr>', desc = 'Symbols (Trouble)' },
+      { '<leader>xx', '<cmd>Trouble diagnostics toggle<cr>',                        desc = 'Diagnostics (Trouble)' },
+      { '<leader>xX', '<cmd>Trouble diagnostics toggle filter.buf=0<cr>',           desc = 'Buffer Diagnostics (Trouble)' },
+      { '<leader>xs', '<cmd>Trouble symbols toggle focus=false<cr>',                desc = 'Symbols (Trouble)' },
       { '<leader>xl', '<cmd>Trouble lsp toggle focus=false win.position=right<cr>', desc = 'LSP Definitions / References' },
-      { '<leader>xL', '<cmd>Trouble loclist toggle<cr>', desc = 'Location List (Trouble)' },
-      { '<leader>xQ', '<cmd>Trouble qflist toggle<cr>', desc = 'Quickfix List (Trouble)' },
+      { '<leader>xL', '<cmd>Trouble loclist toggle<cr>',                            desc = 'Location List (Trouble)' },
+      { '<leader>xQ', '<cmd>Trouble qflist toggle<cr>',                             desc = 'Quickfix List (Trouble)' },
     },
   },
 
