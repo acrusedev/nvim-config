@@ -968,6 +968,24 @@ require('lazy').setup({
     end,
   },
   {
+    'loctvl842/monokai-pro.nvim',
+    name = 'monokai',
+    config = function()
+      require('rose-pine').setup {
+        styles = {
+          bold = true,
+          italic = false,
+          transparency = true,
+        },
+      }
+
+      vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
+      vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
+
+      vim.cmd 'colorscheme monokai-pro-spectrum'
+    end,
+  },
+  {
     'rose-pine/neovim',
     name = 'rose-pine',
     config = function()
@@ -982,10 +1000,39 @@ require('lazy').setup({
       vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
       vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
 
-      -- vim.cmd 'colorscheme rose-pine'
+      --  vim.cmd 'colorscheme rose-pine'
+    end,
+  }, {
+  'rose-pine/neovim',
+  name = 'rose-pine',
+  config = function()
+    require('rose-pine').setup {
+      styles = {
+        bold = true,
+        italic = false,
+        transparency = true,
+      },
+    }
+
+    vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
+    vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
+
+    --  vim.cmd 'colorscheme rose-pine'
+  end,
+},
+
+  {
+    "morhetz/gruvbox", -- gruvbox
+    lazy = false,
+    priority = 1000,
+    name = 'gruvbox',
+    config = function()
+      vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
+      vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
+      vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
+      -- vim.cmd 'colorscheme gruvbox'
     end,
   },
-
   {
     'stevedylandev/darkmatter-nvim',
     lazy = false,
@@ -1033,7 +1080,7 @@ require('lazy').setup({
       vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
       vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
       vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
-      vim.cmd 'colorscheme oxocarbon'
+      -- vim.cmd 'colorscheme oxocarbon'
     end
   },
 
@@ -1132,9 +1179,9 @@ require('lazy').setup({
   {
     'notjedi/nvim-rooter.lua',
     opts = {
-      manual = false,
+      manual = true,
       rooter_patterns = {
-        --        '.git',
+        '.git',
         'Makefile',
         'package.json',
       },
