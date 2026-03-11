@@ -1,4 +1,4 @@
---[[init
+--[[initinitinit
 initinit
 =====================================================================
 ==================== READ THIS BEFORE CONTINUING ====================
@@ -982,7 +982,7 @@ require('lazy').setup({
       vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
       vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
 
-      vim.cmd 'colorscheme monokai-pro-spectrum'
+      -- vim.cmd 'colorscheme monokai-pro-spectrum'
     end,
   },
   {
@@ -1002,25 +1002,7 @@ require('lazy').setup({
 
       --  vim.cmd 'colorscheme rose-pine'
     end,
-  }, {
-  'rose-pine/neovim',
-  name = 'rose-pine',
-  config = function()
-    require('rose-pine').setup {
-      styles = {
-        bold = true,
-        italic = false,
-        transparency = true,
-      },
-    }
-
-    vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
-    vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
-
-    --  vim.cmd 'colorscheme rose-pine'
-  end,
-},
-
+  },
   {
     "morhetz/gruvbox", -- gruvbox
     lazy = false,
@@ -1045,7 +1027,24 @@ require('lazy').setup({
       -- vim.cmd 'colorscheme darkmatter-nvim'
     end,
   },
-
+  {
+    'shaunsingh/nord.nvim',
+    lazy = false,
+    priority = 1000,
+    name = 'nord',
+    config = function()
+      --vim.cmd 'colorscheme nord'
+    end,
+  },
+  {
+    'dgox16/oldworld.nvim',
+    lazy = false,
+    priority = 1000,
+    name = 'oldworld',
+    config = function()
+      vim.cmd 'colorscheme oldworld'
+    end
+  },
   {
     'Mofiqul/vscode.nvim',
     priority = 1000,
