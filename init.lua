@@ -230,6 +230,16 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'c',
+  group = vim.api.nvim_create_augroup('c-indent', { clear = true }),
+  callback = function()
+    vim.opt_local.tabstop = 2
+    vim.opt_local.shiftwidth = 2
+    vim.opt_local.expandtab = true
+  end,
+})
+
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
