@@ -231,7 +231,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 })
 
 vim.api.nvim_create_autocmd('FileType', {
-  pattern = 'c',
+  pattern = { 'c', 'cpp' },
   group = vim.api.nvim_create_augroup('c-indent', { clear = true }),
   callback = function()
     vim.opt_local.tabstop = 2
