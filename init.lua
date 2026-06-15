@@ -1,5 +1,4 @@
 --[[initinitinit
-initinit
 =====================================================================
 ==================== READ THIS BEFORE CONTINUING ====================
 =====================================================================
@@ -231,7 +230,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 })
 
 vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'c', 'cpp' },
+  pattern = { 'c', 'cpp', 'go' },
   group = vim.api.nvim_create_augroup('c-indent', { clear = true }),
   callback = function()
     vim.opt_local.tabstop = 2
@@ -252,7 +251,33 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
--- [[ Configure and install plugins ]]
+-- local omarchy_theme_path = '/home/kamil/.config/omarchy/current/theme/neovim.lua'
+--
+-- local function load_omarchy_theme()
+--   local ok, spec = pcall(dofile, omarchy_theme_path)
+--   if not ok or type(spec) ~= 'table' then
+--     return {}, nil
+--   end
+--
+--   local theme_plugins = {}
+--   local colorscheme = nil
+--
+--   for _, plugin in ipairs(spec) do
+--     if type(plugin) == 'table' then
+--       if plugin[1] == 'LazyVim/LazyVim' then
+--         colorscheme = plugin.opts and plugin.opts.colorscheme or colorscheme
+--       else
+--         theme_plugins[#theme_plugins + 1] = plugin
+--       end
+--     end
+--   end
+--
+--   return theme_plugins, colorscheme
+-- end
+--
+-- local omarchy_plugins, omarchy_colorscheme = load_omarchy_theme()
+--
+-- -- [[ Configure and install plugins ]]
 --
 --  To check the current status of your plugins, run
 --    :Lazy
@@ -263,7 +288,7 @@ vim.opt.rtp:prepend(lazypath)
 --    :Lazy update
 --
 -- NOTE: Here is where you install your plugins.
-require('lazy').setup({
+local plugins = {
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
 
@@ -439,7 +464,7 @@ require('lazy').setup({
       picker = {
         enabled = true,
         layout = {
-          preset = "default",
+          preset = 'default',
         },
         formatters = {
           file = {
@@ -450,9 +475,9 @@ require('lazy').setup({
         win = {
           input = {
             keys = {
-              ["<c-t>"] = { "edit_tab", mode = { "i", "n" } },
-              ["<c-s>"] = { "edit_split", mode = { "i", "n" } },
-              ["<c-v>"] = { "edit_vsplit", mode = { "i", "n" } },
+              ['<c-t>'] = { 'edit_tab', mode = { 'i', 'n' } },
+              ['<c-s>'] = { 'edit_split', mode = { 'i', 'n' } },
+              ['<c-v>'] = { 'edit_vsplit', mode = { 'i', 'n' } },
             },
           },
         },
@@ -1009,19 +1034,20 @@ require('lazy').setup({
 
       vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
       vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
+      vim.api.nvim_set_hl(0, 'NormalNC', { bg = 'none' })
 
-      --  vim.cmd 'colorscheme rose-pine'
+      vim.cmd 'colorscheme rose-pine'
     end,
   },
   {
-    "morhetz/gruvbox", -- gruvbox
+    'morhetz/gruvbox', -- gruvbox
     lazy = false,
     priority = 1000,
     name = 'gruvbox',
     config = function()
       vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
       vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
-      vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
+      vim.api.nvim_set_hl(0, 'NormalNC', { bg = 'none' })
       -- vim.cmd 'colorscheme gruvbox'
     end,
   },
@@ -1051,22 +1077,19 @@ require('lazy').setup({
     lazy = false,
     priority = 1000,
     name = 'oldworld',
-    config = function()
-      vim.cmd 'colorscheme oldworld'
-    end
   },
   {
     'Mofiqul/vscode.nvim',
     priority = 1000,
-    name = "vscode",
+    name = 'vscode',
     config = function()
       require('vscode').setup {
-        transparent = true
+        transparent = true,
       }
       vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
       vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
       -- vim.cmd 'colorscheme vscode'
-    end
+    end,
   },
 
   {
@@ -1075,22 +1098,22 @@ require('lazy').setup({
     name = 'poimandres',
     config = function()
       require('poimandres').setup {
-        disable_background = true
+        disable_background = true,
       }
 
       vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
       vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
       -- vim.cmd 'colorscheme poimandres'
-    end
+    end,
   },
   {
     'nyoom-engineering/oxocarbon.nvim',
     config = function()
       vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
       vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
-      vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
+      vim.api.nvim_set_hl(0, 'NormalNC', { bg = 'none' })
       -- vim.cmd 'colorscheme oxocarbon'
-    end
+    end,
   },
 
   {
@@ -1098,9 +1121,9 @@ require('lazy').setup({
     config = function()
       vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
       vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
-      vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
+      vim.api.nvim_set_hl(0, 'NormalNC', { bg = 'none' })
       -- vim.cmd 'colorscheme vesper'
-    end
+    end,
   },
   {
     'savq/melange-nvim',
@@ -1114,7 +1137,7 @@ require('lazy').setup({
     end,
   },
 
-  {                     -- Useful plugin to show you pending keybinds.
+  { -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'
     opts = {
@@ -1160,7 +1183,7 @@ require('lazy').setup({
 
       -- Document existing key chains
       spec = {
-        { '<leader>c', group = '[C]ode',     mode = { 'n', 'x' } },
+        { '<leader>c', group = '[C]ode', mode = { 'n', 'x' } },
         { '<leader>d', group = '[D]ocument' },
         { '<leader>r', group = '[R]ename' },
         { '<leader>s', group = '[S]earch' },
@@ -1200,7 +1223,7 @@ require('lazy').setup({
   { -- Fuzzy Finder (files, lsp, etc)
     'nvim-telescope/telescope.nvim',
     event = 'VimEnter',
-    branch = '0.1.x',
+    version = '*',
     dependencies = {
       'nvim-lua/plenary.nvim',
       { -- If encountering errors, see telescope-fzf-native README for installation instructions
@@ -1219,7 +1242,7 @@ require('lazy').setup({
       { 'nvim-telescope/telescope-ui-select.nvim' },
 
       -- Useful for getting pretty icons, but requires a Nerd Font.
-      { 'nvim-tree/nvim-web-devicons',            enabled = vim.g.have_nerd_font },
+      { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
     },
     config = function()
       -- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -1343,7 +1366,7 @@ require('lazy').setup({
       'WhoIsSethDaniel/mason-tool-installer.nvim',
 
       -- Useful status updates for LSP.
-      { 'j-hui/fidget.nvim',       opts = {} },
+      { 'j-hui/fidget.nvim', opts = {} },
 
       -- Allows extra capabilities provided by nvim-cmp
       'hrsh7th/cmp-nvim-lsp',
@@ -1509,7 +1532,6 @@ require('lazy').setup({
             return diagnostic_message[diagnostic.severity]
           end,
         },
-
       }
 
       -- lsp servers and clients are able to communicate to each other what features they support.
@@ -1682,11 +1704,11 @@ require('lazy').setup({
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
         -- javascript = { "prettierd", "prettier", stop_after_first = true },
-        html = { 'prettier' },       -- Add Prettier for HTML
+        html = { 'prettier' }, -- Add Prettier for HTML
         typescript = { 'prettier' }, -- Add Prettier for TypeScript
         javascript = { 'prettier' }, -- Ensure JavaScript is covered
-        json = { 'prettier' },       -- Optional, for JSON formatting
-        css = { 'prettier' },        -- Optional, for CSS formatting
+        json = { 'prettier' }, -- Optional, for JSON formatting
+        css = { 'prettier' }, -- Optional, for CSS formatting
       },
     },
   },
@@ -1728,7 +1750,7 @@ require('lazy').setup({
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-path',
       'hrsh7th/cmp-nvim-lsp-signature-help',
-      'hrsh7th/cmp-buffer',   -- Uzupełnianie ze słów w bieżącym buforze
+      'hrsh7th/cmp-buffer', -- Uzupełnianie ze słów w bieżącym buforze
       'onsails/lspkind.nvim', -- Ikony w menu podpowiedzi
     },
     config = function()
@@ -1849,11 +1871,11 @@ require('lazy').setup({
             -- set group index to 0 to skip loading LuaLS completions as lazydev recommends it
             group_index = 0,
           },
-          { name = 'nvim_lsp' },                                   -- LSP (Python, Rust, TS, JS)
-          { name = 'luasnip' },                                    -- Snippety
-          { name = 'nvim_lsp_signature_help' },                    -- Sygnatury funkcji
-          { name = 'path' },                                       -- Ścieżki plików
-          { name = 'buffer',                 keyword_length = 3 }, -- Słowa z bieżącego bufora
+          { name = 'nvim_lsp' }, -- LSP (Python, Rust, TS, JS)
+          { name = 'luasnip' }, -- Snippety
+          { name = 'nvim_lsp_signature_help' }, -- Sygnatury funkcji
+          { name = 'path' }, -- Ścieżki plików
+          { name = 'buffer', keyword_length = 3 }, -- Słowa z bieżącego bufora
         },
       }
     end,
@@ -1921,10 +1943,38 @@ require('lazy').setup({
     event = 'VeryLazy',
     opts = {},
     keys = {
-      { 's', mode = { 'n', 'x', 'o' }, function() require('flash').jump() end,              desc = 'Flash' },
-      { 'S', mode = { 'n', 'x', 'o' }, function() require('flash').treesitter() end,        desc = 'Flash Treesitter' },
-      { 'r', mode = 'o',               function() require('flash').remote() end,            desc = 'Remote Flash' },
-      { 'R', mode = { 'o', 'x' },      function() require('flash').treesitter_search() end, desc = 'Treesitter Search' },
+      {
+        's',
+        mode = { 'n', 'x', 'o' },
+        function()
+          require('flash').jump()
+        end,
+        desc = 'Flash',
+      },
+      {
+        'S',
+        mode = { 'n', 'x', 'o' },
+        function()
+          require('flash').treesitter()
+        end,
+        desc = 'Flash Treesitter',
+      },
+      {
+        'r',
+        mode = 'o',
+        function()
+          require('flash').remote()
+        end,
+        desc = 'Remote Flash',
+      },
+      {
+        'R',
+        mode = { 'o', 'x' },
+        function()
+          require('flash').treesitter_search()
+        end,
+        desc = 'Treesitter Search',
+      },
     },
   },
 
@@ -1935,18 +1985,18 @@ require('lazy').setup({
     cmd = 'Trouble',
     opts = {},
     keys = {
-      { '<leader>xx', '<cmd>Trouble diagnostics toggle<cr>',                        desc = 'Diagnostics (Trouble)' },
-      { '<leader>xX', '<cmd>Trouble diagnostics toggle filter.buf=0<cr>',           desc = 'Buffer Diagnostics (Trouble)' },
-      { '<leader>xs', '<cmd>Trouble symbols toggle focus=false<cr>',                desc = 'Symbols (Trouble)' },
+      { '<leader>xx', '<cmd>Trouble diagnostics toggle<cr>', desc = 'Diagnostics (Trouble)' },
+      { '<leader>xX', '<cmd>Trouble diagnostics toggle filter.buf=0<cr>', desc = 'Buffer Diagnostics (Trouble)' },
+      { '<leader>xs', '<cmd>Trouble symbols toggle focus=false<cr>', desc = 'Symbols (Trouble)' },
       { '<leader>xl', '<cmd>Trouble lsp toggle focus=false win.position=right<cr>', desc = 'LSP Definitions / References' },
-      { '<leader>xL', '<cmd>Trouble loclist toggle<cr>',                            desc = 'Location List (Trouble)' },
-      { '<leader>xQ', '<cmd>Trouble qflist toggle<cr>',                             desc = 'Quickfix List (Trouble)' },
+      { '<leader>xL', '<cmd>Trouble loclist toggle<cr>', desc = 'Location List (Trouble)' },
+      { '<leader>xQ', '<cmd>Trouble qflist toggle<cr>', desc = 'Quickfix List (Trouble)' },
     },
   },
 
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
-    version = "v0.1.9",
+    branch = 'main',
     dependencies = { 'nvim-lua/plenary.nvim' },
     build = ':TSUpdate',
     -- main = 'nvim-treesitter.configs', -- Sets main module to use for opts, this causes some errors, no idea why :((
@@ -2014,7 +2064,24 @@ require('lazy').setup({
   -- Or use telescope!
   -- In normal mode type `<space>sh` then write `lazy.nvim-plugin`
   -- you can continue same window with `<space>sr` which resumes last telescope search
-}, {
+}
+
+-- for i = #omarchy_plugins, 1, -1 do
+--   table.insert(plugins, 1, omarchy_plugins[i])
+-- end
+--
+-- if omarchy_colorscheme then
+--   table.insert(plugins, 1, {
+--     'nvim-lua/plenary.nvim',
+--     lazy = false,
+--     priority = 1000,
+--     config = function()
+--       vim.cmd.colorscheme(omarchy_colorscheme)
+--     end,
+--   })
+-- end
+--
+require('lazy').setup(plugins, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
     -- default lazy.nvim defined Nerd Font icons, otherwise define a unicode icons table
