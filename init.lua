@@ -1,4 +1,4 @@
---[[initinitinit
+--[[initinitinitinit
 =====================================================================
 ==================== READ THIS BEFORE CONTINUING ====================
 =====================================================================
@@ -100,16 +100,7 @@ vim.keymap.set('v', '<', '<gv')
 vim.o.termguicolors = true
 vim.opt.background = 'dark'
 
--- Load your colorscheme
-
--- Now override highlights *after* colorscheme is applied
-vim.cmd [[
-  highlight Normal guibg=NONE ctermbg=NONE
-  highlight NormalNC guibg=NONE ctermbg=NONE
-  highlight EndOfBuffer guibg=NONE ctermbg=NONE
-  highlight LineNr guibg=NONE ctermbg=NONE
-  highlight SignColumn guibg=NONE ctermbg=NONE
-]] -- [[ Setting options ]]
+-- [[ Setting options ]]
 -- See `:help vim.opt`
 -- NOTE: You can change these options as you wish!
 --  For more options, you can see `:help option-list`
@@ -453,7 +444,7 @@ local plugins = {
     opts = {
       animate = { enabled = false },
       bigfile = { enabled = true },
-      dashboard = { enabled = true },
+      dashboard = { enabled = false },
       explorer = { enabled = true },
       indent = { enabled = true },
       input = { enabled = true },
@@ -1002,141 +993,6 @@ local plugins = {
       })
     end,
   },
-  {
-    'loctvl842/monokai-pro.nvim',
-    name = 'monokai',
-    config = function()
-      require('rose-pine').setup {
-        styles = {
-          bold = true,
-          italic = false,
-          transparency = true,
-        },
-      }
-
-      vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
-      vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
-
-      -- vim.cmd 'colorscheme monokai-pro-spectrum'
-    end,
-  },
-  {
-    'rose-pine/neovim',
-    name = 'rose-pine',
-    config = function()
-      require('rose-pine').setup {
-        styles = {
-          bold = true,
-          italic = false,
-          transparency = true,
-        },
-      }
-
-      vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
-      vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
-      vim.api.nvim_set_hl(0, 'NormalNC', { bg = 'none' })
-
-      vim.cmd 'colorscheme rose-pine'
-    end,
-  },
-  {
-    'morhetz/gruvbox', -- gruvbox
-    lazy = false,
-    priority = 1000,
-    name = 'gruvbox',
-    config = function()
-      vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
-      vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
-      vim.api.nvim_set_hl(0, 'NormalNC', { bg = 'none' })
-      -- vim.cmd 'colorscheme gruvbox'
-    end,
-  },
-  {
-    'stevedylandev/darkmatter-nvim',
-    lazy = false,
-    priority = 1000,
-    name = 'darkmatter',
-    config = function()
-      vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
-      vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
-
-      -- vim.cmd 'colorscheme darkmatter-nvim'
-    end,
-  },
-  {
-    'shaunsingh/nord.nvim',
-    lazy = false,
-    priority = 1000,
-    name = 'nord',
-    config = function()
-      --vim.cmd 'colorscheme nord'
-    end,
-  },
-  {
-    'dgox16/oldworld.nvim',
-    lazy = false,
-    priority = 1000,
-    name = 'oldworld',
-  },
-  {
-    'Mofiqul/vscode.nvim',
-    priority = 1000,
-    name = 'vscode',
-    config = function()
-      require('vscode').setup {
-        transparent = true,
-      }
-      vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
-      vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
-      -- vim.cmd 'colorscheme vscode'
-    end,
-  },
-
-  {
-    'olivercederborg/poimandres.nvim',
-    priority = 1000,
-    name = 'poimandres',
-    config = function()
-      require('poimandres').setup {
-        disable_background = true,
-      }
-
-      vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
-      vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
-      -- vim.cmd 'colorscheme poimandres'
-    end,
-  },
-  {
-    'nyoom-engineering/oxocarbon.nvim',
-    config = function()
-      vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
-      vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
-      vim.api.nvim_set_hl(0, 'NormalNC', { bg = 'none' })
-      -- vim.cmd 'colorscheme oxocarbon'
-    end,
-  },
-
-  {
-    'datsfilipe/vesper.nvim',
-    config = function()
-      vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
-      vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
-      vim.api.nvim_set_hl(0, 'NormalNC', { bg = 'none' })
-      -- vim.cmd 'colorscheme vesper'
-    end,
-  },
-  {
-    'savq/melange-nvim',
-
-    name = 'melange',
-    config = function()
-      vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
-      vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
-
-      -- vim.cmd 'colorscheme melange'
-    end,
-  },
-
   { -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'
@@ -1205,6 +1061,16 @@ local plugins = {
     'tpope/vim-fugitive',
     config = function()
       vim.keymap.set('n', '<leader>gs', vim.cmd.Git)
+    end,
+  },
+
+  {
+    'wtfox/jellybeans.nvim',
+    lazy = false,
+    priority = 1000,
+    opts = {},
+    config = function()
+      vim.cmd 'colorscheme jellybeans'
     end,
   },
 
