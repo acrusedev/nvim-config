@@ -96,9 +96,9 @@ vim.keymap.set('v', '>', '>gv')
 vim.keymap.set('v', '<', '<gv')
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
--- Use true colors in terminal
-vim.o.termguicolors = true
+vim.opt.termguicolors = false
 vim.opt.background = 'dark'
+vim.cmd.colorscheme 'ghostty-terminal'
 
 -- [[ Setting options ]]
 -- See `:help vim.opt`
@@ -331,7 +331,40 @@ local plugins = {
     config = function()
       require('lualine').setup {
         options = {
-          theme = 'auto',
+          theme = {
+            normal = {
+              a = {},
+              b = {},
+              c = {},
+            },
+            insert = {
+              a = {},
+              b = {},
+              c = {},
+            },
+            visual = {
+              a = {},
+              b = {},
+              c = {},
+            },
+            replace = {
+              a = {},
+              b = {},
+              c = {},
+            },
+            command = {
+              a = {},
+              b = {},
+              c = {},
+            },
+            inactive = {
+              a = {},
+              b = {},
+              c = {},
+            },
+          },
+          component_separators = '',
+          section_separators = '',
         },
         sections = {
           lualine_c = { 'filename' },
@@ -1064,15 +1097,15 @@ local plugins = {
     end,
   },
 
-  {
-    'wtfox/jellybeans.nvim',
-    lazy = false,
-    priority = 1000,
-    opts = {},
-    config = function()
-      vim.cmd 'colorscheme jellybeans'
-    end,
-  },
+  -- {
+  --   'wtfox/jellybeans.nvim',
+  --   lazy = false,
+  --   priority = 1000,
+  --   opts = {},
+  --   config = function()
+  --     vim.cmd 'colorscheme jellybeans'
+  --   end,
+  -- },
 
   {
     'notjedi/nvim-rooter.lua',
